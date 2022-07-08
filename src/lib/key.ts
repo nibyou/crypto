@@ -1,8 +1,8 @@
 import { HashTypes, KeyFormat, KeyType } from "./constants";
 import { base64ToArrayBuffer, exportSomeKey } from "./utils";
 
-export async function deriveKey(data: string, iterations: number = 10000): Promise<CryptoKey> {
-    var saltBuffer = crypto.getRandomValues(new Uint8Array(8));
+export async function deriveKey(data: string, iterations: number = 10000, salt?: string): Promise<CryptoKey> {
+    var saltBuffer = salt ? base64ToArrayBuffer(salt) : crypto.getRandomValues(new Uint8Array(8));
     var encoder = new TextEncoder();
     var passphraseKey = encoder.encode(data);
 
