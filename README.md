@@ -16,7 +16,7 @@ import * as ncrypto from '@nibyou/crypto';
 
 ### Asymmetric encryption
 
-This library uses RSA-OAEP with SHA-256 and 2048 bit keylength.
+This library uses RSA-OAEP with SHA-256 and 4096 bit keylength in accordance with the current [recommendations by the BSI](https://www.bsi.bund.de/SharedDocs/Downloads/EN/BSI/Publications/TechGuidelines/TG02102/BSI-TR-02102-1.pdf?__blob=publicationFile).
 
 Keys are exchanged headless, so the differenciation between public and private keys has to be made in the business logic.
 
