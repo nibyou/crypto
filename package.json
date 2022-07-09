@@ -1,6 +1,6 @@
 {
   "name": "@nibyou/crypto",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Nibyou crypto packages, wraps WebCrypto and specifically SubtleCrypto for AES and RSA encryption ",
   "main": "dist/index.js",
   "scripts": {
