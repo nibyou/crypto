@@ -1,21 +1,20 @@
-export enum KeyType {
-    PBKDF2 = 'PBKDF2',
-    AESGCM = 'AES-GCM',
-    RSAOAEP = 'RSA-OAEP',
-}
+export const PBKDF2 =  'PBKDF2';
+export const AES_GCM = 'AES-GCM';
+export const RSA_OAEP = 'RSA-OAEP';
 
-export enum KeyFormat {
-    RAW = 'raw',
-    PKCS8 = 'pkcs8',
-    SPKI = 'spki',
-}
+export const RAW = 'raw';
+export const PKCS8 = 'pkcs8';
+export const SPKI = 'spki';
 
-export enum HashTypes {
-    SHA256 = 'SHA-256',
 
-}
+export const SHA256 = 'SHA-256';
+  
 
-export enum EncPrefix {
-    AES = 'senc',
-    RSA = 'aenc',
-}
+export const PREFIX_AES = 'senc';
+export const PREFIX_RSA = 'aenc';
+
+export const ENCRYPT = "encrypt";
+export const DECRYPT = "decrypt";
+
+export const DERIVEBITS = 'deriveBits';
+export const DERIVEKEY = 'deriveKey';

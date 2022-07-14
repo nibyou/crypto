@@ -1,4 +1,3 @@
-import { KeyFormat } from "./constants";
 const encoder = new TextEncoder();
 const decoder = new TextDecoder();
 
@@ -17,7 +16,7 @@ export function base64ToArrayBuffer(base64: string): ArrayBuffer {
     );
 }
 
-export async function exportSomeKey(format: KeyFormat, key: CryptoKey): Promise<string> {
+export async function exportSomeKey(format: "pkcs8" | "raw" | "spki", key: CryptoKey): Promise<string> {
     const abKey = await crypto.subtle.exportKey(format, key);
 
     return arrayBufferToBase64(abKey);

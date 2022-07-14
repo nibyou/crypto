@@ -1,27 +1,39 @@
-import { HashTypes, KeyFormat, KeyType } from "./constants";
-import { base64ToArrayBuffer, exportSomeKey } from "./utils";
+import {
+  AES_GCM,
+  DECRYPT,
+  DERIVEBITS,
+  DERIVEKEY,
+  ENCRYPT,
+  PBKDF2,
+  PKCS8,
+  RAW,
+  RSA_OAEP,
+  SHA256,
+  SPKI
+} from './constants';
+import { base64ToArrayBuffer, exportSomeKey } from './utils';
 
 export async function deriveKey(data: string, iterations: number = 10000, salt?: string): Promise<CryptoKey> {
-    var saltBuffer = salt ? base64ToArrayBuffer(salt) : crypto.getRandomValues(new Uint8Array(8));
-    var encoder = new TextEncoder();
-    var passphraseKey = encoder.encode(data);
+    const saltBuffer = salt ? base64ToArrayBuffer(salt) : crypto.getRandomValues(new Uint8Array(8));
+    const encoder = new TextEncoder();
+    const passphraseKey = encoder.encode(data);
 
-    const key = await crypto.subtle.importKey(KeyFormat.RAW, passphraseKey, {name: KeyType.PBKDF2}, false, ['deriveBits', 'deriveKey'])
+    const key = await crypto.subtle.importKey(RAW, passphraseKey, {name: PBKDF2}, false, [DERIVEBITS, DERIVEKEY])
 
     return crypto.subtle.deriveKey(
         { 
-            "name": KeyType.PBKDF2,
+            "name": PBKDF2,
             "salt": saltBuffer,
             "iterations": iterations,
-            "hash": HashTypes.SHA256
+            "hash": SHA256
         },
         key,
         { 
-            "name": KeyType.AESGCM, 
+            "name": AES_GCM,
             "length": 256 
         },
         true,
-        [ "encrypt", "decrypt" ]
+        [ENCRYPT, DECRYPT]
     )
 
 }
@@ -29,13 +41,13 @@ export async function deriveKey(data: string, iterations: number = 10000, salt?:
 export async function generateKeyPair(extractable: boolean = true): Promise<CryptoKeyPair> {
     return crypto.subtle.generateKey(
         {
-            name: KeyType.RSAOAEP,
+            name: RSA_OAEP,
             modulusLength: 4096,
             publicExponent: new Uint8Array([1, 0, 1]),
-            hash: HashTypes.SHA256
+            hash: SHA256
         },
         extractable,
-        ["encrypt", "decrypt"]
+        [ENCRYPT, DECRYPT]
     );
 }
 
@@ -43,14 +55,14 @@ export async function importPrivateKey(base64: string, extractable: boolean = fa
     const binaryDer = base64ToArrayBuffer(base64);
   
     return crypto.subtle.importKey(
-        KeyFormat.PKCS8,
+      PKCS8,
       binaryDer,
       {
-        name: KeyType.RSAOAEP,
-        hash: HashTypes.SHA256,
+        name: RSA_OAEP,
+        hash: SHA256,
       },
       extractable,
-      ["decrypt"]
+      [DECRYPT]
     );
   }
 
@@ -58,49 +70,49 @@ export async function importPublicKey(base64: string, extractable: boolean = fal
     const binaryDer = base64ToArrayBuffer(base64);
 
     return crypto.subtle.importKey(
-        KeyFormat.SPKI,
+      SPKI,
       binaryDer,
       {
-        name: KeyType.RSAOAEP,
-        hash: HashTypes.SHA256,
+        name: RSA_OAEP,
+        hash: SHA256,
       },
       extractable,
-      ["encrypt"]
+      [ENCRYPT]
     );
   }
 
 export async function exportPrivateKey(key: CryptoKey): Promise<string> {
-    return exportSomeKey(KeyFormat.PKCS8, key);
+    return exportSomeKey(PKCS8, key);
 }
 
 export async function exportPublicKey(key: CryptoKey): Promise<string> {
-    return exportSomeKey(KeyFormat.SPKI, key);
+    return exportSomeKey(SPKI, key);
 }
 
 export async function generateKey(extractable: boolean = true): Promise<CryptoKey> {
     return crypto.subtle.generateKey(
         { 
-            "name": KeyType.AESGCM, 
+            "name": AES_GCM,
             "length": 256 
         },
         extractable,
-        [ "encrypt", "decrypt" ]
+        [ ENCRYPT, DECRYPT ]
     )
 }
 
 export async function importKey(base64: string): Promise<CryptoKey> {
     return crypto.subtle.importKey(
-        KeyFormat.RAW,
+        RAW,
         base64ToArrayBuffer(base64),
         { 
-            "name": KeyType.AESGCM, 
+            "name": AES_GCM,
             "length": 256 
         },
         false,
-        [ "encrypt", "decrypt" ]
+        [ ENCRYPT, DECRYPT ]
     );
 }
 
 export async function exportKey(key: CryptoKey): Promise<string> {
-   return exportSomeKey(KeyFormat.RAW, key);
+   return exportSomeKey(RAW, key);
 }

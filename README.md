@@ -135,3 +135,11 @@ const derivedKey: CryptoKey = await ncrypto.deriveKey(randomUserInput);
 ```
 
 The key can then be used in other AES operations.
+
+## Testing
+
+To test this library, you can run the tests with `npm test` or `yarn test`.
+
+## License
+
+This library is licensed under the GPL Version 3 license. See [LICENSE](./LICENSE).

@@ -1,4 +1,4 @@
-import { EncPrefix, KeyType } from "./constants";
+import { PREFIX_RSA, RSA_OAEP } from './constants';
 import { arrayBufferToBase64, base64ToArrayBuffer, decodeData, encodeData } from "./utils"
 
 export type RSAEncryptionResult = {
@@ -10,13 +10,13 @@ export async function encryptRSA(data: any, publicKey: CryptoKey): Promise<RSAEn
 
     const encryptedData = await crypto.subtle.encrypt(
         {
-            name: KeyType.RSAOAEP
+            name: RSA_OAEP
         },
         publicKey,
         encoded
     );
                         // format: prefix:data
-    const encryptedB64 = `${EncPrefix.RSA}:${arrayBufferToBase64(encryptedData)}`;
+    const encryptedB64 = `${PREFIX_RSA}:${arrayBufferToBase64(encryptedData)}`;
 
     return {
         data: encryptedB64
@@ -27,13 +27,13 @@ export async function decryptRSA(data: string, privateKey: CryptoKey): Promise<a
     const splitDataForPrefix = data.split(':');
 
     if (splitDataForPrefix.length != 2) throw new Error('Not prefixed');
-    if (EncPrefix.RSA !== splitDataForPrefix[0]) throw new Error('Not RSA prefixed');
+    if (PREFIX_RSA !== splitDataForPrefix[0]) throw new Error('Not RSA prefixed');
 
     const cipherText = base64ToArrayBuffer(splitDataForPrefix[1]);
 
     const decryptedData = await crypto.subtle.decrypt(
         {
-            name: KeyType.RSAOAEP
+            name: RSA_OAEP
         },
         privateKey,
         cipherText

@@ -1,4 +1,4 @@
-import { EncPrefix, KeyType } from "./constants";
+import { AES_GCM, PREFIX_AES } from './constants';
 import { arrayBufferToBase64, base64ToArrayBuffer, decodeData, encodeData } from './utils';
 import { exportKey } from "./key";
 
@@ -14,14 +14,14 @@ export async function encryptAES(data: any, key: CryptoKey): Promise<AESEncrypti
 
     const encryptedData = await crypto.subtle.encrypt(
         {
-            name: KeyType.AESGCM,
+            name: AES_GCM,
             iv: iv
         },
         key,
         encoded
     );
                         // format: prefix:data.iv
-    const encryptedB64 = `${EncPrefix.AES}:${arrayBufferToBase64(encryptedData)}.${arrayBufferToBase64(iv)}`;
+    const encryptedB64 = `${PREFIX_AES}:${arrayBufferToBase64(encryptedData)}.${arrayBufferToBase64(iv)}`;
     const keyB64 = await exportKey(key!);
 
     return {
@@ -34,20 +34,20 @@ export async function decryptAES(data: string, key: CryptoKey): Promise<any> {
     const splitDataForPrefix = data.split(':');
 
     if (splitDataForPrefix.length != 2) throw new Error('Not prefixed');
-    if (EncPrefix.AES !== splitDataForPrefix[0]) throw new Error('Not AES prefixed');
+    if (PREFIX_AES !== splitDataForPrefix[0]) throw new Error('Not AES prefixed');
 
     const splitForCipherText = splitDataForPrefix[1].split('.');
 
     if (splitForCipherText.length != 2) throw new Error('Cipher Text malformed');
 
-    const cipherText = base64ToArrayBuffer(splitDataForPrefix[0]);
-    const iv = base64ToArrayBuffer(splitDataForPrefix[1]);
+    const cipherText = base64ToArrayBuffer(splitForCipherText[0]);
+    const iv = base64ToArrayBuffer(splitForCipherText[1]);
 
     if (iv.byteLength != 12) throw new Error('IV malformed');
 
     const decryptedData = await crypto.subtle.decrypt(
         {
-            name: KeyType.AESGCM,
+            name: AES_GCM,
             iv: iv
         },
         key,
