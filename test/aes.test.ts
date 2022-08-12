@@ -1,13 +1,22 @@
 import {
   generateKey,
   encryptAES,
-  decryptAES
-} from '../dist';
+  decryptAES,
+} from '../src';
+
+import { PREFIX_AES } from '../src/lib/constants';
 
 const plaintext = "Hello World!";
 const plainObject = {
   hello: "world",
 };
+
+const fail = {
+  noPrefix: "0OXQZphqpGkRQp8YEEiHEw==",
+  noAESPrefix: ":0OXQZphqpGkRQp8YEEiHEw==",
+  noIV: `${PREFIX_AES}:cuc6svcdnVoCxLd5kBAPnQ==`,
+  ivMalformed: `${PREFIX_AES}:cuc6svcdnVoCxLd5kBAPnQ==.b36`,
+}
 
 describe("AES Encryption", () => {
   test("Encrypt text", async () => {
@@ -36,5 +45,13 @@ describe("AES Decryption", () => {
     const encrypted = await encryptAES(plainObject, key);
     const decrypted = await decryptAES(encrypted.data, key);
     expect(decrypted.hello).toBe(plainObject.hello);
+  });
+
+  test("Decrypt fail", async () => {
+    const key = await generateKey(true);
+    expect(() => decryptAES(fail.noPrefix, key)).rejects.toThrow('Not prefixed');
+    expect(() => decryptAES(fail.noAESPrefix, key)).rejects.toThrow('Not AES prefixed');
+    expect(() => decryptAES(fail.noIV, key)).rejects.toThrow('Cipher Text malformed');
+    expect(() => decryptAES(fail.ivMalformed, key)).rejects.toThrow('IV malformed');
   });
 });

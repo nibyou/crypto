@@ -4,6 +4,8 @@ Nibyou's crypto package is a wrapper around the WebCrypto and specifically the S
 
 For client support, see [caniuse](https://caniuse.com/?search=crypto).
 
+<strong>Zero dependencies, 100% test coverage!</strong>
+
 ## Usage
 
 Install the package using `npm` or `yarn`.
@@ -139,6 +141,12 @@ The key can then be used in other AES operations.
 ## Testing
 
 To test this library, you can run the tests with `npm test` or `yarn test`.
+
+## Test Coverage
+
+| Statements                  | Branches                | Functions                 | Lines             |
+| --------------------------- | ----------------------- | ------------------------- | ----------------- |
+| ![Statements](https://img.shields.io/badge/statements-100%25-brightgreen.svg?style=flat&logo=jest) | ![Branches](https://img.shields.io/badge/branches-100%25-brightgreen.svg?style=flat&logo=jest) | ![Functions](https://img.shields.io/badge/functions-100%25-brightgreen.svg?style=flat&logo=jest) | ![Lines](https://img.shields.io/badge/lines-100%25-brightgreen.svg?style=flat&logo=jest) |
 
 ## License
 

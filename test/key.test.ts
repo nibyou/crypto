@@ -8,15 +8,14 @@ import {
   generateKey,
   exportKey,
   importKey
-} from '../dist';
-import { arrayBufferToBase64 } from '../dist/lib/utils';
+} from '../src';
+import { arrayBufferToBase64 } from '../src/lib/utils';
 
 describe("Key Derivation", () => {
   test("Two derived Keys with random salt are not equal", async () => {
     const password = "password";
-    const iterations = 100;
-    const key1 : CryptoKey = await deriveKey(password, iterations);
-    const key2 : CryptoKey = await deriveKey(password, iterations);
+    const key1 : CryptoKey = await deriveKey(password);
+    const key2 : CryptoKey = await deriveKey(password);
     const key1b64 = arrayBufferToBase64(await crypto.subtle.exportKey("raw", key1));
     const key2b64 = arrayBufferToBase64(await crypto.subtle.exportKey("raw", key2));
     expect(key1).toBeInstanceOf(CryptoKey);

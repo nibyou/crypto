@@ -4,3 +4,7 @@ if (typeof global.crypto === 'undefined') { // noinspection JSConstantReassignme
   global.crypto = new Crypto()
 }
 if (typeof global.CryptoKey === 'undefined') global.CryptoKey = CryptoKey;
+
+if (typeof global.crypto.getRandomValues === 'undefined') { // noinspection JSConstantReassignment
+  global.crypto.getRandomValues = require('node:crypto').webcrypto.getRandomValues;
+}

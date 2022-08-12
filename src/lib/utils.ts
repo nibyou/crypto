@@ -42,7 +42,7 @@ export function decodeData(data: any): any {
 export function getRandomInt(min: number, max: number): number {
     const randomBuffer = new Uint32Array(1);
 
-    window.crypto.getRandomValues(randomBuffer);
+    crypto.getRandomValues(randomBuffer);
 
     let randomNumber = randomBuffer[0] / (0xffffffff + 1);
 
