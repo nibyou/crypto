@@ -29,6 +29,8 @@ Generate a new RSA Key Pair:
 ```typescript
 const keyPairAlice: CryptoKeyPair = await ncrypto.generateKeyPair();
 ```
+`generateKeyPair()` accepts an optional parameter `extractable: boolean` (set to `true` by default) that controls whether or not the keys can be exported using below functions.
+
 
 Export the Public and Private key into Base64 (SPKI and PKCS #8 respectively):
 
@@ -43,6 +45,8 @@ Import Public and Private keys into CryptoKey objects again:
 const publicKey: CryptoKey = await ncrypto.importPublicKey(spki);
 const privateKey: CryptoKey = await ncrypto.importPrivateKey(pkcs8);
 ```
+
+These functions accept an optional parameter `extractable: boolean` (set to `false` by default) that controls whether or not the keys can be exported again.
 
 #### Encryption
 
@@ -94,6 +98,8 @@ Generate a new AES key:
 ```typescript
 const key: CryptoKey = await ncrypto.generateKey();
 ```
+`generateKey()` accepts an optional parameter `extractable: boolean` (set to `true` by default) that controls whether or not the key can be exported using below function.
+
 
 Export the key into raw Base64 format:
 
@@ -135,6 +141,8 @@ Lastly, this package also supports deriving PBKDF2 keys from strings with 64 bit
 const randomUserInput = 'ThisIsASuperSecurePassword';
 const derivedKey: CryptoKey = await ncrypto.deriveKey(randomUserInput);
 ```
+
+The function supports passing `iterations: number = 10000` and `salt: string` as optional second and third parameter. This allows for deterministic key generation (e.g. encrypting a User's private key with their password as input and email as salt).
 
 The key can then be used in other AES operations.
 
