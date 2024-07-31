@@ -100,7 +100,7 @@ export async function generateKey(extractable: boolean = true): Promise<CryptoKe
     )
 }
 
-export async function importKey(base64: string): Promise<CryptoKey> {
+export async function importKey(base64: string, extractable: boolean = false): Promise<CryptoKey> {
     return crypto.subtle.importKey(
         RAW,
         base64ToArrayBuffer(base64),
@@ -108,7 +108,7 @@ export async function importKey(base64: string): Promise<CryptoKey> {
             "name": AES_GCM,
             "length": 256 
         },
-        false,
+        extractable,
         [ ENCRYPT, DECRYPT ]
     );
 }
